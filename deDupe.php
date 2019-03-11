@@ -15,3 +15,15 @@ The goal is to inport json files, assess the contents and export the data after 
 
 //in order to declutter the process the lead object will be in a seperate file.
 include 'Leads.php';
+
+$TestLead = new Leads(1, "me@gmail.com");
+
+echo($TestLead->getId());
+
+echo($TestLead->getEmail());
+
+$TestLead->setEntryDate('today');
+
+echo($TestLead->getEntryDate());
+
+
