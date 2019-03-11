@@ -50,23 +50,32 @@ class Leads {
 	
 	public function getRawEntryDate(){
 		// return the raw Unix timestamp
-
 		return $this->entryDate;
 	}
+	
+	public function getKeys(){
+		return $this->id."_".$this->email;
+	
 	
 	// setters
 	
 	// since Id and Email are keys they should not change and do not get setters.
 	public function setFirstName($firstName){
-		$this->firstName = $firstName;
+		if(is_string($firstName){
+			$this->firstName = $firstName;
+		}
 	}
 	
 	public function setLastName($lastName){
-		$this->lastName = $lastName;
+		if(is_string($lastName){
+			$this->lastName = $lastName;
+		}
 	}
 	
 	public function setAddress($address){
-		$this->address = $address;
+		if(is_string($address)){
+			$this->address = $address;
+		}
 	}
 	
 	public function setEntryDate($entryDate){
@@ -80,7 +89,7 @@ class Leads {
 	}
 	
 	/*
-	right now only the date setter has confirmation code since no limitations or requirements (length, character limitations) have been spesified for the other fields.
+	right now only the date setter has confirmation code since no limitations or requirements (length, character limitations) have been specified for the other fields.
 	*/
 
 }
