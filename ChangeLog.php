@@ -3,7 +3,6 @@
 class ChangeLog {
 
 	private $key; // key should be the key combo of id and email from the Lead obj;
-	private $fieldName;
 	private $oldValue;
 	private $newValue;
 	private $changeDate;
@@ -15,7 +14,6 @@ class ChangeLog {
 	*/
 	function __construct($key, $fieldName, $old, $new){
 		$this->key = $key;
-		$this->fieldName = $fieldName;
 		$this->oldValue = $old;
 		$this->newValue = $new;
 		$this->changeDate = date('U'); //new unix timestamp
@@ -29,9 +27,6 @@ class ChangeLog {
 		return $this->id;
 	}
 	
-	public function getFieldName(){
-		return $this->fieldName;
-	}
 	
 	public function getOldValue(){
 		return $oldValue;
