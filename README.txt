@@ -23,10 +23,10 @@ ChangeLog.php -- this is the object for the log.
 
 Thoughts:
 
-[deDupe ln62, and ln84]
+[deDupe ln61, and ln78]
 Right now I have the program checking for duplicates by Id and email seperatly, one problem that could arrise from this is if an item later in the list (a) has both an Id that matches (b), and an email that matches (c), but the matching items are diferent. The question in this case becomes are (c) and (b) matches? Until (a) came along they were not, and they might have compleatly diferent information prior to (a) but after the deDupe logic runs, they will match.
 One solution to this is to run the dedupe process over the list until all possible duplicates are eliminated. The downside is this might remove desired data. This is a logic question that I would generally ask a project lead. It depends on how important the data is.
 
 
-[deDupe ln129]
+[deDupe ln97]
 There are a few ways that the changes could be logged. I've chosen to do with the less verbose version code wise, but this solution will mean more objects in memory, or more rows in a database. Another solution would be to record each time each value was changed [which might be usefull if we were keeping track of end user actions]. 

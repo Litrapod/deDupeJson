@@ -57,13 +57,14 @@ while (false !== ($entry = readdir($handle))) {
 	*/
 	$list = $json->leads;
 	
-	$newList = deDupe($list);
 	
 	// see README for thoughts on this logic.
-	// $newList = deDupe($newList);
+	$newList = deDupe($list);
 	
-	echo(print_r($newList, true));
-	echo(print_r($changelog, true));
+	//echo(print_r($newList, true));
+	//echo(print_r($changelog, true));
+	
+	echo(json_encode($newList));
 		
 }
 
@@ -71,21 +72,22 @@ while (false !== ($entry = readdir($handle))) {
 function deDupe($list){
 	$emails = array();
 	$ids = array();
-	$masterList[] = array();
+	$masterList = array();
 	global $changelog; // this will keep the same changelog for all files and iterations.
 	
 	foreach($list as $item ){
 		$lead = new Leads($item->_id, $item->email, $item->firstName, $item->lastName, $item->address, $item->entryDate);
 		
-		if(!in_array($lead->getId(), $ids) && !in_array($lead->getEmail(), $emails)){
+		
+		if(!array_key_exists($lead->getId(), $ids) && !array_key_exists($lead->getEmail(), $emails)){
 			// This lead has no matching ids or emails. It's an easy one.
 			$emails[$lead->getEmail()] = count($masterList);
 			$ids[$lead->getId()] = count($masterList);
+			echo($lead->getKeys()." streight to masterlist. key is: ".count($masterList)."\n");
 			$masterList[] = $lead;
-			
 		}else{
 			// see README for thoughts on this logic.
-			if(in_array($lead->getId(), $ids)){
+			if(array_key_exists($lead->getId(), $ids)){
 				$changing = $ids[$lead->getId()];
 				
 				$new = compaireDates($masterList[$changing], $lead);
@@ -97,7 +99,7 @@ function deDupe($list){
 				see README for thoughts on this logic.
 				*/
 				if($lead == $new){
-					$changelog[] = new ChangeLog($lead->getKeys($lead), $masterList[$changing], $lead);
+					$changelog[] = new ChangeLog($lead->getKeys($lead), 'id', $masterList[$changing], $lead);
 					
 					$masterList[$changing] = $new;
 					
@@ -105,18 +107,29 @@ function deDupe($list){
 				
 			}
 			
-			if(in_array($lead->getEmail(), $emails)){
+			if(array_key_exists($lead->getEmail(), $emails)){
 				$changing = $emails[$lead->getEmail()];
 				
 				$new = compaireDates($masterList[$changing], $lead);
 	
 				if($lead == $new){
-					$changelog[] = new ChangeLog($lead->getKeys($lead), $masterList[$changing], $lead);
+					$changelog[] = new ChangeLog($lead->getKeys($lead), 'email', $masterList[$changing], $lead);
 					
 					$masterList[$changing] = $new;
 					
 				}
 			}
+			
+			/*
+			Because a duplicate could have changed the id or email we need to rebuild the lists.
+			*/
+			$emails = array();
+			$ids = array();
+			foreach($masterList as $key => $item){
+				$emails[$item->getEmail()] = $key;
+				$ids[$item->getId()] = $key;
+			}
+			
 		}
 		
 	}

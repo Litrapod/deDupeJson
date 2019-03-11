@@ -3,6 +3,7 @@
 class ChangeLog {
 
 	private $key; // key should be the key combo of id and email from the Lead obj;
+	private $triggerKey;
 	private $oldValue;
 	private $newValue;
 	private $changeDate;
@@ -12,8 +13,9 @@ class ChangeLog {
 	Since there's no point having a log without all the fields, all of them are required for a new object. except the date, which is the time of creation.
 	Also since there likely will be more than one change per Lead any DB table build off this object should have an auto increment ID as well as the key of the Lead.
 	*/
-	function __construct($key, $fieldName, $old, $new){
+	function __construct($key, $triggerKey, $old, $new){
 		$this->key = $key;
+		$this->triggerKey = $triggerKey;
 		$this->oldValue = $old;
 		$this->newValue = $new;
 		$this->changeDate = date('U'); //new unix timestamp
@@ -27,6 +29,9 @@ class ChangeLog {
 		return $this->id;
 	}
 	
+	public function getTriggerKey(){
+		return $this->triggerKey;
+	}
 	
 	public function getOldValue(){
 		return $oldValue;

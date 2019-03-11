@@ -3,17 +3,17 @@
 class Leads {
 
 	// structure based on example data.
-	private $id;
-	private $email;
-	private $firstName;
-	private $lastName;
-	private $address;
-	private $entryDate;
+	public $_id;
+	public $email;
+	public $firstName;
+	public $lastName;
+	public $address;
+	public $entryDate;
 
 	function __construct($id, $email, $firstName = null, $lastName = null, $address = null, $entryDate = null) {
 	
 		// set the id 
-		$this->id = $id;
+		$this->_id = $id;
 	
 		// confirm email is valid if not leave blank.
 		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -35,7 +35,7 @@ class Leads {
 	// getters
 	
 	public function getId (){
-		return $this->id;
+		return $this->_id;
 	}
 	
 	public function getEmail(){
@@ -65,7 +65,7 @@ class Leads {
 	}
 	
 	public function getKeys(){
-		return $this->id."_".$this->email;
+		return $this->_id."_".$this->email;
 	}
 	
 	
