@@ -1,6 +1,6 @@
 <?php
 
-class ChangeLog (
+class ChangeLog {
 
 	private $key; // key should be the key combo of id and email from the Lead obj;
 	private $fieldName;

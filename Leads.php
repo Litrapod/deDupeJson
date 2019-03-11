@@ -10,19 +10,30 @@ class Leads {
 	private $address;
 	private $entryDate;
 
-	function __construct($id, $email) {
+	function __construct($id, $email, $firstName = null, $lastName = null, $address = null, $entryDate = null) {
+	
+		// set the id 
+		$this->id = $id;
 	
 		// confirm email is valid if not leave blank.
 		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$this->email = $email;
 		}
 	
-        // set the id 
-		$this->id = $id;
+        /* 
+		the other values are not required but we will set them in case they are passed in.
+		I am using the setters so that the confirmation logic is not duplicated.
+		*/
+		$this->setFirstName($firstName);
+		$this->setLastName($lastName);
+		$this->setAddress($address);
+		$this->setEntryDate($entryDate);
 		
     }
 	
+	
 	// getters
+	
 	public function getId (){
 		return $this->id;
 	}
@@ -55,19 +66,20 @@ class Leads {
 	
 	public function getKeys(){
 		return $this->id."_".$this->email;
+	}
 	
 	
 	// setters
 	
 	// since Id and Email are keys they should not change and do not get setters.
 	public function setFirstName($firstName){
-		if(is_string($firstName){
+		if(is_string($firstName) ){
 			$this->firstName = $firstName;
 		}
 	}
 	
 	public function setLastName($lastName){
-		if(is_string($lastName){
+		if(is_string($lastName)){
 			$this->lastName = $lastName;
 		}
 	}
