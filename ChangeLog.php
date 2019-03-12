@@ -2,11 +2,11 @@
 
 class ChangeLog {
 
-	private $key; // key should be the key combo of id and email from the Lead obj;
-	private $triggerKey;
-	private $oldValue;
-	private $newValue;
-	private $changeDate;
+	public $key; // key should be the key combo of id and email from the Lead obj;
+	public $triggerKey;
+	public $oldValue;
+	public $newValue;
+	public $changeDate;
 
 	
 	/* 

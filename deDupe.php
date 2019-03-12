@@ -65,6 +65,7 @@ while (false !== ($entry = readdir($handle))) {
 	//echo(print_r($changelog, true));
 	
 	echo(json_encode($newList));
+	saveChangeLogToFile();
 		
 }
 
@@ -150,6 +151,24 @@ function compaireDates($one, $two){
 	}
 	
 	return $new;
+}
+
+function saveChangeLogToFile(){
+	global $changelog;
+	
+	if(false === ($handle = opendir('changeLogs'))){
+		// if there is no changeLogs folder do not save the logs in a diferent place.
+		return false;
+	}
+	
+	// name the new file with the date.
+	$fName = 'log-'.date('Y-m-d-His').'.json'; 
+	
+	$handle = fopen($_SERVER['DOCUMENT_ROOT'] . "changeLogs/".$fName, 'a+');
+	
+	fwrite($handle, json_encode($changelog));
+	
+	fclose($handle);
 }
 
 
