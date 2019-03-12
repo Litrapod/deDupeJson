@@ -32,11 +32,11 @@ if(!file_exists('json') || false == ($handle = opendir('json')) ){
 while (false !== ($entry = readdir($handle))) {
 	
 	// skip file structure entries.
-	if($entry == '.' || $entry == '..'){
+	if(in_array($entry, array('.', '..', 'original', 'finished'))){
 		continue; 
 	}
 	
-	echo "Reading $entry\n";
+	echo "\nReading: $entry\n";
 	
 	
 	// check the file...
@@ -50,24 +50,41 @@ while (false !== ($entry = readdir($handle))) {
 		continue;
 	}
 	// this will list the raw json of the file.
-	//echo(print_r($json));
+	// echo(print_r($json, true));
 	
 	/*
-	I will assume that each json file has more than one entry adn that the files are all formatted the same as the example. If this were to change in the future, more checks would need to be added here.
+	I will assume that each json file has more than one entry and that the files are all formatted the same as the example. If this were to change in the future, more checks would need to be added here.
 	*/
 	$list = $json->leads;
-	
+	echo(count($list)." items found in file... processing...\n");
 	
 	// see README for thoughts on this logic.
 	$newList = deDupe($list);
 	
-	//echo(print_r($newList, true));
-	//echo(print_r($changelog, true));
 	
-	echo(json_encode($newList));
-	saveChangeLogToFile();
+	// create new json file for the deduped list.
+	$newFile = fopen($_SERVER['DOCUMENT_ROOT'] . "json/finished/".$entry, 'a+');
+	
+	fwrite($newFile, json_encode($newList));
+	
+	fclose($newFile);
+	
+	// alternately, we could export the data to the command line...
+	// echo(print_r($newFile, true));
+	
+	// move the compleated file to the "original" directory.
+	rename('json/'.$entry, 'json/original/'.$entry);
+	
+	
 		
 }
+
+echo("\n".count($changelog)." changes made on this batch of files. Logging changes...\n");
+
+// if you want a changeloge for each file it should go inside the while, if not this will consolidate the logs.
+saveChangeLogToFile(); 
+
+echo("...changes logged. Process finished.\n");
 
 
 function deDupe($list){
@@ -84,7 +101,6 @@ function deDupe($list){
 			// This lead has no matching ids or emails. It's an easy one.
 			$emails[$lead->getEmail()] = count($masterList);
 			$ids[$lead->getId()] = count($masterList);
-			echo($lead->getKeys()." streight to masterlist. key is: ".count($masterList)."\n");
 			$masterList[] = $lead;
 		}else{
 			// see README for thoughts on this logic.

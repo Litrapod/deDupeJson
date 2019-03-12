@@ -55,13 +55,13 @@ class Leads {
 	}
 	
 	public function getEntryDate(){
-		// while in the Obj the date is stored as a unix timestamp this sets it back ATOM standard for readabuility.
-		return date('Y-m-d\TH:i:sP',$this->entryDate);
+		
+		return $this->entryDate;
 	}
 	
 	public function getRawEntryDate(){
 		// return the raw Unix timestamp
-		return $this->entryDate;
+		return date('U',strtotime($this->entryDate));
 	}
 	
 	public function getKeys(){
@@ -92,9 +92,9 @@ class Leads {
 	
 	public function setEntryDate($entryDate){
 		
-		// confirm an actiual date.
+		// confirm an actiual date, and set in desired format.
 		if($tm = strtotime($entryDate)){
-			$this->entryDate = $tm;
+			$this->entryDate = date('Y-m-d\TH:i:sP',$tm);;
 		}else{
 			return false;
 		}
