@@ -10,6 +10,8 @@ The goal is to inport json files, assess the contents and export the data after 
 * If the dates are the same the later entry should be maintained.
 * the program should log all changes.
 
+* last updated KL 10/10/22
+
 */
 
 
@@ -98,7 +100,7 @@ function deDupe($list){
 		
 		
 		if(!array_key_exists($lead->getId(), $ids) && !array_key_exists($lead->getEmail(), $emails)){
-			// This lead has no matching ids or emails. It's an easy one.
+			// This lead has no matching ids or emails. 
 			$emails[$lead->getEmail()] = count($masterList);
 			$ids[$lead->getId()] = count($masterList);
 			$masterList[] = $lead;
@@ -124,6 +126,7 @@ function deDupe($list){
 				
 			}
 			
+			// Check for matching emails
 			if(array_key_exists($lead->getEmail(), $emails)){
 				$changing = $emails[$lead->getEmail()];
 				
